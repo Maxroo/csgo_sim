@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GO PRO — Career Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===================== SETUP SCREEN ===================== -->
+  <section id="screen-setup" class="screen active">
+    <div class="intro">
+      <div class="intro-tag">Career Simulator</div>
+      <h1>GO <span>PRO</span></h1>
+      <p class="sub">Start as a FACEIT grinder, wait for yearly org offers, sign a team, and then enter tournament mode when you want the next bracket step. Every choice moves a stat.</p>
+      
+      <div class="setup-group">
+        <label data-i18n="ui.language">Language / 語言</label>
+        <select id="langSelect">
+        <option value="en">English</option>
+        <option value="zh">繁體中文 (Chinese)</option>
+        </select>
+      </div>
+
+      <div class="setup-card">
+        <div class="field">
+          <label for="pname">Player name</label>
+          <input type="text" id="pname" placeholder="s2mple" maxlength="20">
+        </div>
+        <div class="field">
+          <label for="pcountry">Country</label>
+          <select id="pcountry"></select>
+        </div>
+        <div class="field">
+          <label>Playstyle</label>
+          <div class="archetype-grid" id="archetypes"></div>
+        </div>
+        <div class="field">
+          <label for="pevents">Events per Year (Game Pace)</label>
+          <select id="pevents">
+            <option value="2">2 events / year (Fast Pace)</option>
+            <option value="4" selected>4 events / year (Standard Pace)</option>
+            <option value="6">6 events / year (Detailed Pace)</option>
+          </select>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="startBtn" disabled>Loading events…</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== GAME SCREEN ===================== -->
+  <section id="screen-game" class="screen">
+    <div class="hud">
+      <div class="hud-cell hud-name">
+        <div class="nm" id="hudName">—</div>
+        <div class="tier" id="hudTier">—</div>
+      </div>
+      <div class="hud-cell">
+        <div class="hud-label">Age</div>
+        <div class="hud-value small" id="hudAge">16</div>
+      </div>
+      <div class="hud-cell">
+        <div class="hud-label">Earnings</div>
+        <div class="hud-value small" id="hudMoney">$0</div>
+      </div>
+      <div class="hud-cell">
+        <div class="hud-label">Fame</div>
+        <div class="hud-value small" id="hudFame">0</div>
+      </div>
+      <div class="hud-cell">
+        <div class="hud-label">Timeline</div>
+        <div class="hud-value small" id="hudTime">Y1 · M1</div>
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <div>
+        <div class="panel" id="playerStatsPanel" style="margin-bottom:18px;">
+          <div class="panel-title">Player Stats</div>
+          <div id="playerStatsList"></div>
+        </div>
+        <div class="panel" id="teamStatsPanel" style="margin-bottom:18px; display:none;">
+          <div class="panel-title">Team Stats</div>
+          <div id="teamStatsList"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Career Log</div>
+          <div class="log" id="logList"></div>
+        </div>
+        <div class="retire-row">
+          <button id="retireBtn">End career</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="event-card" id="eventCard"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== END SCREEN ===================== -->
+  <section id="screen-end" class="screen">
+    <div class="end">
+      <div class="end-card">
+        <div class="end-kicker" id="endKicker">Career Over</div>
+        <h2 id="endTitle">Retired</h2>
+        <p class="flavor" id="endFlavor"></p>
+        <div class="stat-grid" id="endStats"></div>
+        <button class="btn" id="restartBtn">Start a new career</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/data.js"></script>
+<script src="js/teams.js"></script>
+<script src="js/tournaments.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

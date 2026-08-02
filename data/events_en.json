@@ -1,0 +1,74 @@
+[
+  {
+    "id": "first_pc",
+    "category": "lifestyle",
+    "once": true,
+    "maxAge": 17,
+    "kicker": "Origin Story",
+    "title": "The Family Computer",
+    "desc": "Your parents finally caved and bought a shared desktop. You've been sneaking on it after homework, queueing ranked until 2AM.",
+    "choices": [
+      {
+        "label": "Grind ranked every night",
+        "successChance": 0.7,
+        "success": {
+          "effects": { "aim": 6, "mental": -2 },
+          "result": "Your hours climb fast. The practice pays off."
+        },
+        "failure": {
+          "effects": { "aim": 1, "mental": -6 },
+          "result": "You burn out quickly, exhausted in class the next day."
+        }
+      },
+      {
+        "label": "Study VODs of the pros instead",
+        "successChance": 0.8,
+        "success": {
+          "effects": { "gamesense": 6, "aim": 1 },
+          "result": "You start seeing rotations before they happen."
+        },
+        "failure": {
+          "effects": { "gamesense": 2, "mental": -2 },
+          "result": "You overcomplicate your reads and second-guess yourself in-game."
+        }
+      }
+    ]
+  },
+  {
+    "id": "tourney_1v1_clutch",
+    "category": "tournament_only",
+    "kicker": "Match Point",
+    "title": "A 1v1 Clutch Situation",
+    "desc": "The round comes down to you. The enemy is holding the site. Do you dry peek or try to fake the defuse/plant?",
+    "choices": [
+      {
+        "label": "Dry peek the angle",
+        "successChance": 0.20,
+        "successStat": "aim",
+        "successStatScale": 0.006,
+        "success": {
+          "effects": { "aim": 1, "tournamentBuff": 25 },
+          "result": "Your crosshair placement was perfect. You snap to their head and clutch the round!"
+        },
+        "failure": {
+          "effects": { "mental": -2, "tournamentBuff": -15 },
+          "result": "You whiff the first bullet and get punished immediately."
+        }
+      },
+      {
+        "label": "Play time and use utility",
+        "successChance": 0.30,
+        "successStat": "gamesense",
+        "successStatScale": 0.005,
+        "success": {
+          "effects": { "gamesense": 1, "tournamentBuff": 10 },
+          "result": "You flush them out with a perfectly placed flash and secure the round safely."
+        },
+        "failure": {
+          "effects": { "tournamentBuff": -5 },
+          "result": "You misread their position, throw a bad flash, and run out of time."
+        }
+      }
+    ]
+  }
+]
