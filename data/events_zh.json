@@ -56,6 +56,20 @@
           "effects": { "tournamentBuff": -5 },
           "result": "You misread their position, throw a bad flash, and run out of time."
         }
+      },
+      {
+        "label": "假拆包",
+        "successChance": 0.40,
+        "successStat": "gamesense",
+        "successStatScale": 0.005,
+        "success": {
+          "effects": { "gamesense": 1, "tournamentBuff": 10 },
+          "result": "你假拆的声音把敌人从掩体中逼了出来，一发爆头拿下了這回合。"
+        },
+        "failure": {
+          "effects": { "tournamentBuff": -5 },
+          "result": "你的敌人识破了你的假拆，你只能灰溜溜的保枪了."
+        }
       }
     ]
   }

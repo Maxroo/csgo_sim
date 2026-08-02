@@ -4,17 +4,29 @@
 
 const TOURNAMENTS = [
   {
-    id: "faceit_open",
-    name: "FACEIT Open Circuit",
+    id: "ESL_circuit",
+    name: "ESL",
     rounds: 4,
     prizePool: [12000, 24000, 48000, 96000],
   },
   {
-    id: "faceit_open",
-    name: "FACEIT Open Circuit",
+    id: "PGL_circuit",
+    name: "PGL",
     rounds: 4,
     prizePool: [12000, 24000, 48000, 96000],
   },
+  {
+    id: "Major_circuit",
+    name: "Major",
+    rounds: 4,
+    prizePool: [12000, 24000, 48000, 96000],
+  },
+  {
+    id: "Blast_circuit",
+    name: "Blast",
+    rounds: 4,
+    prizePool: [12000, 24000, 48000, 96000],
+  }, 
 ];
 
 function shuffle(list) {
