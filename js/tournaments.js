@@ -9,6 +9,12 @@ const TOURNAMENTS = [
     rounds: 4,
     prizePool: [12000, 24000, 48000, 96000],
   },
+  {
+    id: "faceit_open",
+    name: "FACEIT Open Circuit",
+    rounds: 4,
+    prizePool: [12000, 24000, 48000, 96000],
+  },
 ];
 
 function shuffle(list) {
