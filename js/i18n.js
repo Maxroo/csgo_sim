@@ -29,6 +29,11 @@ const translations = {
     "ui.careerStatusUnsigned": "No team yet. Keep playing until the next contract window arrives.",
     "ui.careerMode": "Career mode",
     "ui.teamOffers": "Team offers",
+    "teamStat.firepower": "Firepower",
+    "teamStat.tactics": "Tactics",
+    "teamStat.entry": "Entry",
+    "teamStat.clutch": "Clutch",
+    "teamStat.teamwork": "Teamwork",
   },
   zh: {
     "ui.language": "語言",
@@ -43,6 +48,11 @@ const translations = {
     "stat.reflexes": "反應",
     "stat.teamwork": "團隊合作",
     "stat.mental": "心態",
+    "teamStat.firepower": "火力",
+    "teamStat.tactics": "戰術",
+    "teamStat.entry": "突破",
+    "teamStat.clutch": "殘局",
+    "teamStat.teamwork": "團隊合作",
     
     "log.start": "你在 FACEIT 上開始了征程，心懷一個真實的目標：成為職業選手。",
     "log.signed": "你與 {team} 簽約了。",

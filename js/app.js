@@ -12,6 +12,72 @@ async function loadEvents() {
   EVENTS = await res.json();
 }
 
+function createRadarChart(statsObj, keys, labelMapper, size = 320, color = "#ffaa00") {
+  const center = size / 2;
+  // Increased padding from 40 to 65 to give the text plenty of room
+  const radius = (size / 2) - 65; 
+  const numPoints = keys.length;
+  let dataPoints = "";
+  let gridPoints = "";
+  let labelsHtml = "";
+
+  // Draw background grid (4 concentric levels)
+  const levels = 4;
+  for (let j = 1; j <= levels; j++) {
+    let levelPoints = "";
+    const r = radius * (j / levels);
+    for (let i = 0; i < numPoints; i++) {
+      const angle = (Math.PI * 2 * i) / numPoints - Math.PI / 2;
+      const x = center + r * Math.cos(angle);
+      const y = center + r * Math.sin(angle);
+      levelPoints += `${x},${y} `;
+    }
+    gridPoints += `<polygon points="${levelPoints}" fill="none" stroke="#444" stroke-width="1" />`;
+  }
+
+  // Draw axis lines and calculate data points + labels
+  for (let i = 0; i < numPoints; i++) {
+    const key = keys[i];
+    const val = Math.max(0, Math.min(100, statsObj[key] || 0));
+    const angle = (Math.PI * 2 * i) / numPoints - Math.PI / 2;
+    
+    // Axis line
+    const endX = center + radius * Math.cos(angle);
+    const endY = center + radius * Math.sin(angle);
+    gridPoints += `<line x1="${center}" y1="${center}" x2="${endX}" y2="${endY}" stroke="#444" stroke-width="1" />`;
+
+    // Data point for polygon
+    const dataR = radius * (val / 100);
+    const dataX = center + dataR * Math.cos(angle);
+    const dataY = center + dataR * Math.sin(angle);
+    dataPoints += `${dataX},${dataY} `;
+
+    // Label text positioning - pushed out to 20 instead of 15
+    const labelR = radius + 20;
+    const labelX = center + labelR * Math.cos(angle);
+    const labelY = center + labelR * Math.sin(angle) + 4;
+    
+    // Align text outward based on which side of the chart it sits
+    let anchor = "middle";
+    if (Math.cos(angle) > 0.1) anchor = "start";
+    else if (Math.cos(angle) < -0.1) anchor = "end";
+    
+    const labelText = labelMapper(key);
+    labelsHtml += `<text x="${labelX}" y="${labelY}" fill="#ccc" font-size="11" font-family="sans-serif" text-anchor="${anchor}">${labelText} (${val})</text>`;
+  }
+
+  return `
+    <div style="text-align: center; margin: 15px 0;">
+      <!-- Added width="100%" and overflow: visible to prevent clipping -->
+      <svg width="100%" height="${size}" viewBox="0 0 ${size} ${size}" style="overflow: visible; max-width: 100%;">
+        ${gridPoints}
+        <polygon points="${dataPoints}" fill="${color}" fill-opacity="0.4" stroke="${color}" stroke-width="2" />
+        ${labelsHtml}
+      </svg>
+    </div>
+  `;
+}
+
 function newState() {
   return {
     name: "",
@@ -99,19 +165,18 @@ function renderPlayerStats() {
   influencePreview.innerHTML = `<div class="team-name">${ARCHETYPES.find(a => a.id === state.archetype)?.name || t("ui.playerRole")}</div>`;
   playerStatsList.appendChild(influencePreview);
 
-  Object.keys(STAT_LABELS).forEach(key => {
-    const value = clamp(state.stats[key]);
-    const cls = key === "mental" ? "mental" : key === "aim" || key === "reflexes" ? "orange" : "";
-    const row = document.createElement("div");
-    row.className = "stat-row";
-    // We dynamically call t("stat." + key) here so it always translates on the fly!
-    row.innerHTML = `
-      <div class="stat-top"><span class="sname">${t("stat." + key)}</span><span class="sval">${value}</span></div>
-      <div class="bar-track"><div class="bar-fill ${cls}" style="width:${value}%"></div></div>
-    `;
-    playerStatsList.appendChild(row);
-  });
+  // NEW: Generate and append Player Radar Chart
+  const playerKeys = Object.keys(STAT_LABELS);
+  const playerRadarHtml = createRadarChart(
+    state.stats, 
+    playerKeys, 
+    key => t("stat." + key), 
+    240, 
+    "#ffaa00" // Orange color for player
+  );
+  playerStatsList.insertAdjacentHTML("beforeend", playerRadarHtml);
 
+  // Keep the existing Yearly Performance Code
   if (Object.keys(state.yearlyPerformance).length > 0) {
     const perfHeader = document.createElement("div");
     perfHeader.className = "team-summary";
@@ -150,45 +215,55 @@ function renderTeamStats() {
   teamStatsList.innerHTML = "";
 
   if (!state.team) {
+    // Unsigned Layout
     const intro = document.createElement("div");
     intro.className = "team-summary";
-    intro.innerHTML = `<div class="team-name">${t("ui.noTeam")}</div>`;
+    intro.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 48px; height: 48px; background: #222; border-radius: 6px;"></div>
+        <div class="team-name">${t("ui.noTeam")}</div>
+      </div>
+    `;
     teamStatsList.appendChild(intro);
 
-    TEAM_STAT_KEYS.forEach(key => {
-      const row = document.createElement("div");
-      row.className = "stat-row";
-      // Assuming you added keys like "teamStat.firepower" to your i18n.js
-      row.innerHTML = `
-        <div class="stat-top"><span class="sname">${t("teamStat." + key) || TEAM_STAT_LABELS[key]}</span><span class="sval">—</span></div>
-        <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
-      `;
-      teamStatsList.appendChild(row);
-    });
+    // Empty Team Radar Chart
+    const emptyStats = { firepower: 0, tactics: 0, entry: 0, clutch: 0, teamwork: 0 };
+    const emptyRadarHtml = createRadarChart(
+      emptyStats, 
+      TEAM_STAT_KEYS, 
+      key => t("teamStat." + key) || TEAM_STAT_LABELS[key], 
+      240, 
+      "#444"
+    );
+    teamStatsList.insertAdjacentHTML("beforeend", emptyRadarHtml);
     return;
   }
 
+  // Signed Layout with Team Icon
   const intro = document.createElement("div");
   intro.className = "team-summary";
   intro.innerHTML = `
-    <div class="team-name">${state.team.name}</div>
-    <div class="team-meta">${state.team.region} · ${state.team.style}</div>
-    <div class="team-meta muted">${t("ui.contractedIn", { y: state.contract.signedAtYear, m: state.contract.signedAtMonth })}</div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <img src="sources/team_icons/placeholder.png" alt="Team Icon" style="width: 48px; height: 48px; border-radius: 6px; object-fit: cover; background: #222;">
+      <div>
+        <div class="team-name">${state.team.name}</div>
+        <div class="team-meta">${state.team.region}</div>
+        <div class="team-meta muted">${t("ui.contractedIn", { y: state.contract.signedAtYear, m: state.contract.signedAtMonth })}</div>
+      </div>
+    </div>
     <div class="btn-row" style="justify-content:flex-start; margin-top:14px;"></div>
   `;
   teamStatsList.appendChild(intro);
 
-  TEAM_STAT_KEYS.forEach(key => {
-    const value = clamp(state.team.stats[key]);
-    const cls = key === "clutch" ? "mental" : key === "firepower" || key === "entry" ? "orange" : "";
-    const row = document.createElement("div");
-    row.className = "stat-row";
-    row.innerHTML = `
-      <div class="stat-top"><span class="sname">${TEAM_STAT_LABELS[key]}</span><span class="sval">${value}</span></div>
-      <div class="bar-track"><div class="bar-fill ${cls}" style="width:${value}%"></div></div>
-    `;
-    teamStatsList.appendChild(row);
-  });
+  // Generate and append Team Radar Chart
+  const teamRadarHtml = createRadarChart(
+    state.team.stats, 
+    TEAM_STAT_KEYS, 
+    key => t("teamStat." + key) || TEAM_STAT_LABELS[key], 
+    240, 
+    "#4facfe" // Blue color for team
+  );
+  teamStatsList.insertAdjacentHTML("beforeend", teamRadarHtml);
 }
 
 function renderCareerHub(card) {
