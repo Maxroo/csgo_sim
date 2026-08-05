@@ -19,7 +19,68 @@
           "effects": { "aim": 1, "mental": -6 },
           "result": "你很快就燃燒殆盡，隔天上課時疲憊不堪。"
         }
+      },
+      {
+        "label": "你的父母看到你每天投入cs的时间太久,而你已经决定参加职业",
+        "successChance": 0.5,
+        "success": {
+          "effects": { "aim": 2, "mental": 5 },
+          "result": "他们决定支持你的选择,你的枪法也因为放下包袱变准了一点。"
+        },
+        "failure": {
+          "effects": { "aim": -1, "mental": -3 },
+          "result": "他们不理解你的决定,争执仍在持续,你也始终为此耿耿于怀。"
+        }
+      },
+      {
+        "label": "上课时偷偷看比赛直播",
+        "successChance": 0.7,
+        "success": {
+          "effects": { "gamesense": 3, "reflexes": 1 },
+          "result": "没有人发现你在偷偷看手机,你得以学会一些职业套路。"
+        },
+        "failure": {
+          "effects": {  "mental": -2 },
+          "result": "你的老师发现了你在看直播,没收了你的手机。"
+        }
+      },
+      {
+        "label": "major的决赛在星期日,但星期一有重要的考试",
+        "successChance": 0.65,
+        "success": {
+          "effects": { "gamesense": 4, "mental": 2 },
+          "result": "你成功平衡了兩者，既沒有影響考試，也享受了比賽。"
+        },
+        "failure": {
+          "effects": { "aim": -1, "gamesense": -1, "mental": -2 },
+          "result": "你熬夜看比赛，第二天考试时精神不济，成绩一落千丈。"
+        }
+      },
+      {
+        "label": "你得知major将在你的家乡举办,可你的零花钱不够买现场的门票",
+        "successChance": 0.7,
+        "success": {
+          "effects": { "gamesense": 5, "mental": 5 },
+          "result": "化身打工战士的你成功攒到的足够的钱买到了决赛门票,决赛非常精彩,而且你支持的队伍成功夺冠。"
+        },
+        "failure": {
+          "effects": { "gamesense": 2 , "mental": -3 },
+          "result": "你虽然攒够了钱,但是该死的购票平台和黄牛串通,决赛门票价格翻了数倍,你只能在家和朋友连麦看了决赛。"
+        }
+      },
+      {
+        "label": "你的天梯分越来越高,就差一点就能够上青训队门槛了",
+        "successChance": 0.6,
+        "success": {
+          "effects": { "gamesense": 4, "mental": -2 },
+          "result": "你的時數快速增加。練習得到了回報。"
+        },
+        "failure": {
+          "effects": { "aim": 1, "mental": -6 },
+          "result": "你很快就燃燒殆盡，隔天上課時疲憊不堪。"
+        }
       }
+  
     ]
   },
   {
