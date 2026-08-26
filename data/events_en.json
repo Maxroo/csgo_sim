@@ -68,7 +68,22 @@
           "effects": { "tournamentBuff": -5 },
           "result": "You misread their position, throw a bad flash, and run out of time."
         }
+      },
+        {
+        "label": "Fake the defuse",
+        "successChance": 0.40,
+        "successStat": "gamesense",
+        "successStatScale": 0.005,
+        "success": {
+          "effects": { "gamesense": 1, "tournamentBuff": 10 },
+          "result": "You flush them out with a perfectly placed flash and secure the round safely."
+        },
+        "failure": {
+          "effects": { "tournamentBuff": -5 },
+          "result": "You misread their position, throw a bad flash, and run out of time."
+        }
       }
+
     ]
   }
 ]
