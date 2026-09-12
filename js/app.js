@@ -244,7 +244,7 @@ function renderTeamStats() {
   intro.className = "team-summary";
   intro.innerHTML = `
     <div style="display: flex; align-items: center; gap: 12px;">
-      <img src="sources/team_icons/placeholder.png" alt="Team Icon" style="width: 48px; height: 48px; border-radius: 6px; object-fit: cover; background: #222;">
+      <img src="SOURCE/team_icons/${state.team.name}.png" alt="Team Icon" style="width: 48px; height: 48px; border-radius: 6px; object-fit: cover; background: #222;">
       <div>
         <div class="team-name">${state.team.name}</div>
         <div class="team-meta">${state.team.region}</div>
